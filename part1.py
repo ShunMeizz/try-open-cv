@@ -18,7 +18,7 @@ cap.set(4, 480) #4 idnumber of height
 cap.set(10, 1000) #10 idnumber of brightness
 
 while True:
-    success, image = cap.read()
+    success, image = cap.read() 
     cv2.imshow("Video Output", image)
     if cv2.waitKey(15) & 0xFF == ord('q'):
         break
