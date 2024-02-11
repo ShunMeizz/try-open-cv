@@ -30,17 +30,27 @@ cap = cv2.VideoCapture(0)
 
 while True:
     success, img = cap.read()
-    imgS = cv2.resize(img,(0,0),None,0.25,0.25)
+    imgS = cv2.resize(img,(0,0),None,0.25,0.25) # 0,0 pixels, 0.25 means 1/4 of the size
     imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
 
-    #in the webcam image we might actually find multiple faces so for that we need to find the lcation of our faces and send
-    #this locations to our face_encodings function
+    # in the webcam image we might actually find multiple faces so for that we need to find the lcation of our faces
+    # and send this locations to our face_encodings function
 
     facesCurrFrame = fr.face_locations(imgS)
-    encodesCurrFrame = fr.face_encodings(imgS,facesCurrFrame)
+    encodesCurrFrame = fr.face_encodings(imgS, facesCurrFrame)
 
-    #one by one it will grab one faceLoc from facesCurrFrame list and then it will grab the encodeFace in the encodesCurrFrame
+    # one by one it will grab one faceLoc from facesCurrFrame list and then it will grab the encodeFace in the encodesCurrFrame
     for encodeFace, faceLoc in zip (encodesCurrFrame, facesCurrFrame):
         matches = fr.compare_faces(encodeListKnown, encodeFace)
         faceDis = fr.face_distance(encodeListKnown, encodeFace)
+        print("Matches: ", matches)
+        print("FaceDis: ", faceDis)
         matchIndex = np.argmin(faceDis)
+        print("Match Index:", matchIndex)  # Debugging: Print match index
+        print("Class Names:", classNames)  # Debugging: Print class names
+        if matches[matchIndex]:
+            name = classNames[matchIndex].upper()
+            print(name)
+
+
+#ytlink: https://www.youtube.com/watch?v=sz25xxF_AVE&t=281s
